@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    environment:
+      QUERY_DEFAULTS_LIMIT: 20
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+    ports:
+      - "8080:8080"
+    networks:
+      - weaviate_network
+
+  healthcare-assistant:
+    build: .
+    depends_on:
+      - weaviate
+    ports:
+      - "8501:8501"
+    networks:
+      - weaviate_network
+
+networks:
+  weaviate_network:
+    driver: bridge
