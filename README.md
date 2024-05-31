@@ -1,0 +1,1 @@
+# weaviate-healthcare-assistant
