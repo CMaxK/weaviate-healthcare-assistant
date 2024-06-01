@@ -37,8 +37,8 @@ user_symptom = "sore throat"
 
 # Generate embedding for the user input
 user_embedding = generate_symptom_embedding(user_symptom)
-print(f"Debug: Generated embedding for user symptom '{user_symptom}':
-      {user_embedding}")
+print(f"""Debug: Generated embedding for user symptom '{user_symptom}':
+      {user_embedding}""")
 
 # Query the diagnosis
 response = query_diagnosis_debug(client, user_embedding)

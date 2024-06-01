@@ -76,7 +76,8 @@ selected_symptoms = st.multiselect("Select symptoms:", possible_symptoms)
 if st.button("Find Diagnosis"):
     if selected_symptoms:
         symptom_embeddings = [
-            generate_symptom_embedding(symptom) for symptom in selected_symptoms
+            generate_symptom_embedding(symptom) for symptom in
+            selected_symptoms
         ]
         aggregated_embedding = aggregate_embeddings(symptom_embeddings)
 
