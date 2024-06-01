@@ -1,3 +1,5 @@
+![CI](https://github.com/cmaxk/weaviate-healthcare-assistant/workflows/CI%20Pipeline/badge.svg)
+
 # Healthcare Assistant App to help diagnose illnesses and suggest remedies
 
 # Tech Stack used:
