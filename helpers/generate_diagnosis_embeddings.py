@@ -63,7 +63,7 @@ for index, row in main_df.iterrows():
     }
     client.data_object.create(properties, "Diagnosis")
 
-    # Store the diagnosis embedding back in main_df for further use (optional)
+    # Store the diagnosis embedding back in main_df for further use
     main_df.at[index, "diagnosis_embedding"] = str(diagnosis_embedding)
 
 
