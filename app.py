@@ -35,7 +35,7 @@ def fetch_additional_data(diagnosis):
 
 # Function to fetch severity from main_df
 def fetch_severity(diagnosis):
-    severity = main_df.loc[main_df['Disease'] == diagnosis, 'severity_tally'].values
+    severity = main_df.loc[main_df['Disease'] == diagnosis, 'custom_severity_score'].values
     return severity[0] if len(severity) > 0 else "Unknown"
 
 # Streamlit UI
@@ -86,7 +86,7 @@ if st.button("Find Diagnosis"):
             st.write("Possible Diagnoses:")
             for diagnosis, similarity, severity, description, precautions in top_diagnoses:
                 st.write(f"### {diagnosis} ({similarity:.0%} symptom match)")
-                st.write(f"**Severity:** {severity}")
+                st.write(f"**Severity:** {severity}/10")
                 st.write(f"**Description:** {description}")
                 st.write("**Precautions:**")
                 for precaution in precautions:

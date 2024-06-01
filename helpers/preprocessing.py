@@ -20,6 +20,11 @@ def calculate_severity(row):
             severity_sum += severity_dict[symptom]
     return severity_sum
 
+# add severity_tally column to df and fill per row. also find the max severity to save for custom severity metric
 main_df['severity_tally'] = main_df.apply(calculate_severity, axis=1)
+max_severity = main_df['severity_tally'].max()
+main_df['custom_severity_score'] = (main_df['severity_tally'] / max_severity) * 10
+main_df['custom_severity_score'] = main_df['custom_severity_score'].clip(upper=10).round(1)
+
 
 main_df.to_csv('data/dataset.csv', index=False)
