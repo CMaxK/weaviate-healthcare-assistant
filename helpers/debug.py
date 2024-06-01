@@ -51,8 +51,7 @@ if not diagnoses:
     print("No relevant diagnosis found.")
 else:
     for diagnosis in diagnoses:
-        print(
-            f"Diagnosis: {diagnosis['diagnosis']},
+        print(f"""
+            Diagnosis: {diagnosis['diagnosis']},
             Severity: {diagnosis['severity']},
-            Distance: {diagnosis['_additional']['distance']}"
-        )
+            Distance: {diagnosis['_additional']['distance']}""")
