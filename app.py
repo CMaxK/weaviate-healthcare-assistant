@@ -65,7 +65,7 @@ st.title("Healthcare Assistant")
 st.markdown(
     """
     **Disclaimer: This tool is for informational purposes only.
-    It is not a substitute for professional medical advice, diagnosis, or treatment.
+    It is not a substitute for professional medical advice, or treatment.
     Always seek the advice of a qualified medical professional.**
     """
 )

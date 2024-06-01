@@ -20,7 +20,7 @@ client = weaviate.Client("http://weaviate:8080")
 try:
     client.schema.get("Symptom")
     logging.info("Symptom class already exists.")
-except:
+except weaviate.exceptions.UnexpectedStatusCodeException:
     logging.info("Creating Symptom class.")
     schema = {
         "classes": [

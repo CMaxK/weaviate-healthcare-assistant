@@ -22,7 +22,8 @@ def calculate_severity(row):
     return severity_sum
 
 
-# add severity_tally column to df and fill per row. also find the max severity to save for custom severity metric
+# add severity_tally column to df and fill per row. also find the max severity
+# to save for custom severity metric
 main_df["severity_tally"] = main_df.apply(calculate_severity, axis=1)
 max_severity = main_df["severity_tally"].max()
 main_df["custom_severity_score"] = (main_df["severity_tally"] / max_severity) * 10

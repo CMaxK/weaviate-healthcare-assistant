@@ -1,4 +1,3 @@
-import pandas as pd
 from transformers import BertModel, BertTokenizer
 
 import weaviate
@@ -38,7 +37,8 @@ user_symptom = "sore throat"
 
 # Generate embedding for the user input
 user_embedding = generate_symptom_embedding(user_symptom)
-print(f"Debug: Generated embedding for user symptom '{user_symptom}': {user_embedding}")
+print(f"Debug: Generated embedding for user symptom '{user_symptom}':
+      {user_embedding}")
 
 # Query the diagnosis
 response = query_diagnosis_debug(client, user_embedding)
@@ -52,5 +52,7 @@ if not diagnoses:
 else:
     for diagnosis in diagnoses:
         print(
-            f"Diagnosis: {diagnosis['diagnosis']}, Severity: {diagnosis['severity']}, Distance: {diagnosis['_additional']['distance']}"
+            f"Diagnosis: {diagnosis['diagnosis']},
+            Severity: {diagnosis['severity']},
+            Distance: {diagnosis['_additional']['distance']}"
         )

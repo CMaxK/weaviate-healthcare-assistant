@@ -30,7 +30,7 @@ client = weaviate.Client("http://weaviate:8080")
 try:
     client.schema.get("Diagnosis")
     logging.info("Diagnosis class already exists.")
-except:
+except weaviate.exceptions.UnexpectedStatusCodeException:
     logging.info("Creating Diagnosis class.")
     schema = {
         "classes": [
@@ -48,7 +48,8 @@ except:
 
 for index, row in main_df.iterrows():
     symptoms = [
-        row[f"Symptom_{i}"] for i in range(1, 18) if pd.notna(row[f"Symptom_{i}"])
+        row[f"Symptom_{i}"] for i in range(1, 18)
+        if pd.notna(row[f"Symptom_{i}"])
     ]
     symptom_embeddings = [
         generate_diagnosis_embedding(symptom.strip()) for symptom in symptoms
