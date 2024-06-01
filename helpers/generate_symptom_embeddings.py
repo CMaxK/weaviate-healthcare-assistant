@@ -35,7 +35,8 @@ except:
     client.schema.create(schema)
 
 # Generate embeddings and store in Weaviate
-severity_df['embedding'] = severity_df['Symptom'].apply(generate_symptom_embedding)
+severity_df['embedding'] = severity_df['Symptom'].apply(
+    generate_symptom_embedding)
 ensure_correct_format(severity_df, 'embedding')
 
 for index, row in severity_df.iterrows():

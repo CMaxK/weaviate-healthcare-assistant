@@ -26,17 +26,27 @@ precautions_df = pd.read_csv("data/symptom_precaution.csv")
 descriptions_df = pd.read_csv("data/symptom_Description.csv")
 
 # Function to fetch additional diagnosis data
+
+
 def fetch_additional_data(diagnosis):
-    description = descriptions_df.loc[descriptions_df['Disease'] == diagnosis, 'Description'].values
-    precautions = precautions_df.loc[precautions_df['Disease'] == diagnosis, ['Precaution_1', 'Precaution_2', 'Precaution_3', 'Precaution_4']].values
-    description = description[0] if len(description) > 0 else "No description available."
-    precautions = precautions[0] if len(precautions) > 0 else ["No precautions available."]
+    description = descriptions_df.loc[descriptions_df['Disease']
+                                      == diagnosis, 'Description'].values
+    precautions = precautions_df.loc[precautions_df['Disease'] == diagnosis, [
+        'Precaution_1', 'Precaution_2', 'Precaution_3', 'Precaution_4']].values
+    description = description[0] if len(
+        description) > 0 else "No description available."
+    precautions = precautions[0] if len(precautions) > 0 else [
+        "No precautions available."]
     return description, precautions
 
 # Function to fetch severity from main_df
+
+
 def fetch_severity(diagnosis):
-    severity = main_df.loc[main_df['Disease'] == diagnosis, 'custom_severity_score'].values
+    severity = main_df.loc[main_df['Disease'] ==
+                           diagnosis, 'custom_severity_score'].values
     return severity[0] if len(severity) > 0 else "Unknown"
+
 
 # Streamlit UI
 st.title("Healthcare Assistant")
@@ -53,7 +63,8 @@ selected_symptoms = st.multiselect("Select symptoms:", possible_symptoms)
 
 if st.button("Find Diagnosis"):
     if selected_symptoms:
-        symptom_embeddings = [generate_symptom_embedding(symptom) for symptom in selected_symptoms]
+        symptom_embeddings = [generate_symptom_embedding(
+            symptom) for symptom in selected_symptoms]
         aggregated_embedding = aggregate_embeddings(symptom_embeddings)
 
         # Fetch diagnosis embeddings from Weaviate
@@ -63,8 +74,10 @@ if st.button("Find Diagnosis"):
         similarities = []
         for diagnosis in diagnosis_data:
             diagnosis_embedding = np.array(diagnosis['embedding'])
-            similarity = cosine_similarity(aggregated_embedding, diagnosis_embedding)
-            severity = fetch_severity(diagnosis['diagnosis'])  # Fetch severity from main_df
+            similarity = cosine_similarity(
+                aggregated_embedding, diagnosis_embedding)
+            # Fetch severity from main_df
+            severity = fetch_severity(diagnosis['diagnosis'])
             similarities.append((diagnosis['diagnosis'], similarity, severity))
 
         # Sort by similarity
@@ -77,7 +90,8 @@ if st.button("Find Diagnosis"):
             if diagnosis not in unique_diagnoses:
                 unique_diagnoses[diagnosis] = similarity
                 description, precautions = fetch_additional_data(diagnosis)
-                top_diagnoses.append((diagnosis, similarity, severity, description, precautions))
+                top_diagnoses.append(
+                    (diagnosis, similarity, severity, description, precautions))
                 if len(top_diagnoses) == 5:
                     break
 

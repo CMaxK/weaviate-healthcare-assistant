@@ -9,12 +9,14 @@ from helpers.helpers import aggregate_diagnosis_embeddings
 tokenizer = BertTokenizer.from_pretrained("dmis-lab/biobert-base-cased-v1.1")
 model = BertModel.from_pretrained("dmis-lab/biobert-base-cased-v1.1")
 
+
 def generate_diagnosis_embedding(text):
     inputs = tokenizer(text, return_tensors="pt")
     with torch.no_grad():
         outputs = model(**inputs)
     embedding = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
     return embedding
+
 
 # Load main_df
 main_df = pd.read_csv("data/dataset.csv")
@@ -43,8 +45,10 @@ except:
     client.schema.create(schema)
 
 for index, row in main_df.iterrows():
-    symptoms = [row[f"Symptom_{i}"] for i in range(1, 18) if pd.notna(row[f"Symptom_{i}"])]
-    symptom_embeddings = [generate_diagnosis_embedding(symptom.strip()) for symptom in symptoms]
+    symptoms = [row[f"Symptom_{i}"] for i in range(
+        1, 18) if pd.notna(row[f"Symptom_{i}"])]
+    symptom_embeddings = [generate_diagnosis_embedding(
+        symptom.strip()) for symptom in symptoms]
     diagnosis_embedding = aggregate_diagnosis_embeddings(symptom_embeddings)
 
     properties = {

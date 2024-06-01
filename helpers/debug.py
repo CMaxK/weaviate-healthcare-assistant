@@ -3,6 +3,7 @@ from transformers import BertTokenizer, BertModel
 import weaviate
 from helpers.helpers import generate_symptom_embedding
 
+
 def query_diagnosis_debug(client, embedding):
     print(f"Debug: Querying with embedding: {embedding}")
 
@@ -18,6 +19,7 @@ def query_diagnosis_debug(client, embedding):
 
     return query
 
+
 # Load BioBERT model and tokenizer
 tokenizer = BertTokenizer.from_pretrained("dmis-lab/biobert-base-cased-v1.1")
 model = BertModel.from_pretrained("dmis-lab/biobert-base-cased-v1.1")
@@ -26,7 +28,8 @@ model = BertModel.from_pretrained("dmis-lab/biobert-base-cased-v1.1")
 client = weaviate.Client("http://weaviate:8080")
 
 # Check if any diagnosis data is present in Weaviate
-diagnosis_check = client.query.get("Diagnosis", ["diagnosis", "severity", "embedding"]).do()
+diagnosis_check = client.query.get(
+    "Diagnosis", ["diagnosis", "severity", "embedding"]).do()
 print(f"Debug: Existing diagnosis data in Weaviate: {diagnosis_check}")
 
 # Example user input
@@ -34,7 +37,8 @@ user_symptom = "sore throat"
 
 # Generate embedding for the user input
 user_embedding = generate_symptom_embedding(user_symptom)
-print(f"Debug: Generated embedding for user symptom '{user_symptom}': {user_embedding}")
+print(
+    f"Debug: Generated embedding for user symptom '{user_symptom}': {user_embedding}")
 
 # Query the diagnosis
 response = query_diagnosis_debug(client, user_embedding)
@@ -47,4 +51,5 @@ if not diagnoses:
     print("No relevant diagnosis found.")
 else:
     for diagnosis in diagnoses:
-        print(f"Diagnosis: {diagnosis['diagnosis']}, Severity: {diagnosis['severity']}, Distance: {diagnosis['_additional']['distance']}")
+        print(
+            f"Diagnosis: {diagnosis['diagnosis']}, Severity: {diagnosis['severity']}, Distance: {diagnosis['_additional']['distance']}")
