@@ -1,8 +1,10 @@
-from transformers import BertTokenizer, BertModel
 import logging
-import weaviate
-import torch
+
 import numpy as np
+import torch
+from transformers import BertModel, BertTokenizer
+
+import weaviate
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -27,8 +29,13 @@ def fetch_diagnosis_embeddings(client):
     }
     """
     response = client.query.raw(query)
-    if response and 'data' in response and 'Get' in response['data'] and 'Diagnosis' in response['data']['Get']:
-        return response['data']['Get']['Diagnosis']
+    if (
+        response
+        and "data" in response
+        and "Get" in response["data"]
+        and "Diagnosis" in response["data"]["Get"]
+    ):
+        return response["data"]["Get"]["Diagnosis"]
     return []
 
 
@@ -39,8 +46,7 @@ def cosine_similarity(vec1, vec2):
 def generate_symptom_embedding(text):
     inputs = tokenizer(text, return_tensors="pt")
     outputs = model(**inputs)
-    embedding = outputs.last_hidden_state.mean(
-        dim=1).squeeze().detach().numpy()
+    embedding = outputs.last_hidden_state.mean(dim=1).squeeze().detach().numpy()
     return embedding
 
 

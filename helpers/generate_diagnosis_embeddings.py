@@ -1,8 +1,10 @@
-import pandas as pd
-from transformers import BertTokenizer, BertModel
-import weaviate
 import logging
+
+import pandas as pd
 import torch
+from transformers import BertModel, BertTokenizer
+
+import weaviate
 from helpers.helpers import aggregate_diagnosis_embeddings
 
 # Load BioBERT model and tokenizer
@@ -45,21 +47,23 @@ except:
     client.schema.create(schema)
 
 for index, row in main_df.iterrows():
-    symptoms = [row[f"Symptom_{i}"] for i in range(
-        1, 18) if pd.notna(row[f"Symptom_{i}"])]
-    symptom_embeddings = [generate_diagnosis_embedding(
-        symptom.strip()) for symptom in symptoms]
+    symptoms = [
+        row[f"Symptom_{i}"] for i in range(1, 18) if pd.notna(row[f"Symptom_{i}"])
+    ]
+    symptom_embeddings = [
+        generate_diagnosis_embedding(symptom.strip()) for symptom in symptoms
+    ]
     diagnosis_embedding = aggregate_diagnosis_embeddings(symptom_embeddings)
 
     properties = {
-        "diagnosis": row['Disease'],
-        "severity": int(row['severity_tally']),
-        "embedding": diagnosis_embedding
+        "diagnosis": row["Disease"],
+        "severity": int(row["severity_tally"]),
+        "embedding": diagnosis_embedding,
     }
     client.data_object.create(properties, "Diagnosis")
 
     # Store the diagnosis embedding back in main_df for further use (optional)
-    main_df.at[index, 'diagnosis_embedding'] = str(diagnosis_embedding)
+    main_df.at[index, "diagnosis_embedding"] = str(diagnosis_embedding)
 
 
 # Save the updated dataframe
